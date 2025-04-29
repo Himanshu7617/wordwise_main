@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Irish+Grover&family=Parkinsans:wght@300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Titan+One&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+  font-family :"Parkinsans", sans-serif;
+
+} 
+
+.rotate-y-0 {
+  transform: rotateY(0deg);
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+
+
+@layer base {
+  @font-face {
+    font-family: 'Watermelon';
+    src: url("/fonts/Watermelon-Regular.woff") format("woff"),
+         url("/fonts/customFont.ttf") format("truetype");
+  }
+
+  
+}

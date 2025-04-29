@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WordWise</title>
+  </head>
+  <body class="h-[40vh] w-fit p-8">
+    <!-- <div class="h-[16rem] w-[16rem] bg-blue-300 relative  ">
+        <div id="registration-links" class="h-[16rem] w-[16rem] hidden flex-col justify-center items-center gap-4">
+            <button id="signUp-button-reference" class="h-fit w-fit p-3 bg-black rounded-3xl text-white text-2xl hover:bg-gray-700 outline-none">
+                Signup
+            </button>
+            <button id="login-button-reference" class="h-fit w-fit p-3 bg-black rounded-3xl text-white text-2xl hover:bg-gray-700 outline-none">
+                Login
+            </button>
+        </div>
+        <form id="signUp-form"  class="h-[16rem] w-[16rem] hidden absolute  top-0 left-0 flex-col items-center gap-4">
+            <label class="text-3xl" for="signup-name-input">Name: </label>
+            <input type="text" name="name" id="signup-name-input" class="h-6 w-full bg-none p-4 text-2xl text-black" placeholder="xyz">
+            <label class="text-3xl" for="signup-email">Email: </label>
+            <input type="email" name="email" id="signup-email-input" class="h-6 w-full bg-none p-4 text-2xl text-black" placeholder="xyz@gmail.com">
+            <label class="text-3xl" for="signup-password-input">Password: </label>
+            <input type="password" name="password" id="signup-password-input" class="h-6 w-full bg-none p-4 text-2xl text-black" placeholder="agagag">
+            <button type="submit" id="signup-submit" class="h-fit w-full p-2 bg-black rouded-xl text-white text-2xl hover:bg-gray-700 outline-none">submit</button>
+        </form>
+        <form id="login-form"  class="h-[16rem] w-[16rem] hidden absolute top-0 left-0 flex-col items-center gap-4">
+            <label class="text-3xl" for="login-email-input">Email: </label>
+            <input type="email" name="email" id="login-email-input" class="h-6 w-full bg-none p-4 text-2xl text-black" placeholder="xyz@gmail.com">
+            <label class="text-3xl" for="login-password-input">Password: </label>
+            <input type="password" name="password" id="login-password-input" class="h-6 w-full bg-none p-4 text-2xl text-black" placeholder="agagag">
+            <button type="submit" id="login-input" class="h-fit w-full p-2 bg-black rouded-xl text-white text-2xl hover:bg-gray-700 outline-none">submit</button>
+        </form>
+    </div> -->
+    <div class="w-full h-fit p-4 flex justify-center">
+
+      <h1  class=" text-2xl font-extrabold underline ">Wordwise</h1>
+    </div>
+    
+    <div id="email-container" class=" m-2  flex-col gap-1.5" >
+
+        <p class="text-xl ">Sign up on our <a class="text-xl text-purple-800 hover:bg-purple-900 hover:text-purple-100  border-2 border-purple-900 p-1 rounded-xl px-3 underline hover:cursor-pointer"  target="_blank"  href="https://mini-project-sepia-nine.vercel.app/">website</a> to keep your word history </p>
+
+        <p class="text-xl self-center">Or </p>
+        <p class="text-xl">if already have an account, then simply submit of your email </p>
+      <input placeholder="abc@gmail.com" class="border-2 border-black rounded-xl p-2 text-xl " type="email" name="email" id="email-input" />
+      <p id="error-para" class="text-xl text-red-500 m-2"></p>
+      <button id="email-submit-button" class=" w-full h-fit text-xl p-2 mb-8 text-black border-2 border-black hover:border-purple-800 hover:bg-purple-800 hover:text-purple-100 rounded-xl ">submit</button>
+    </div>
+
+    <div id="random-word-container" style="padding-bottom: 20px;" class="flex min-w-[400px]    flex-col gap-1.5">
+  
+      <div class=" flex border-2 gap-2 rounded-xl  p-4 text-xl border-black">
+        <p>Word : </p>
+        <p id="word"> Loading...</p>
+      </div>
+      <div class=" flex border-2  gap-2 rounded-xl p-4 text-xl border-black">
+        <p>Definition : </p>
+        <p id="definition"> Loading...</p>
+      </div>
+      <div class=" flex border-2  gap-2 rounded-xl p-4 text-xl border-black h-fit w-[400px]">
+        <p>Example&nbsp;:</p>
+        <p id="example"> Loading...</p>
+      </div>
+
+      <div class="h-fit w-fit p-4 text-xl ">
+        <p>Go to the <a class="text-xl text-purple-800 hover:bg-purple-900 hover:text-purple-100  border-2 border-purple-900 p-1 rounded-xl px-3 underline hover:cursor-pointer"  target="_blank"  href="https://mini-project-sepia-nine.vercel.app/">website</a> </p>
+      </div>
+
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
