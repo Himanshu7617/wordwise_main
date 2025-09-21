@@ -12,7 +12,7 @@ app.use(express.json());
 const geminiAPIKEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({apiKey : geminiAPIKEY});
 
-
+//  https://backend.gghimanshu333.workers.dev
 
 const config = { 
   credential : admin.credential.cert({

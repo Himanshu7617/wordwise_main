@@ -1,25 +1,6 @@
-/**
- * user tasks 
- * authentication 
- * get user by email
- * create user
- * update user 
- * delete user 
- * get all users
- * get user by id
- * 
- */
-
-/**
- * user sign in  -> /auth/signin -> sends email, name, password -> return JWT token and user data + if have account with email then return error
- * user login -> /auth/login -> sends email, password -> return JWT token and user data + if no account with email then return error
- * 
- * 
- */
-
 
 import { Hono } from 'hono';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { sign } from 'hono/jwt';
 import bcrypt from 'bcryptjs';
@@ -38,13 +19,13 @@ const userRoutes = new Hono<{
 
 
 // authentication routes
-userRoutes.post('/singup', async(c ) => { 
+userRoutes.post('/signup', async(c ) => { 
     const prisma = new PrismaClient({
         datasources: {
-            db: { url: c.env.DATABASE_URL }, 
-        },
-        extensions: [withAccelerate()],
-    });
+            db: { url: c.env.DATABASE_URL }
+        }
+        
+    }).$extends(withAccelerate());
 
     //get data from request body
     const { email, name, password } = await c.req.json();
@@ -61,7 +42,7 @@ userRoutes.post('/singup', async(c ) => {
     //create new user
     const hashed = await bcrypt.hash(password, 10);
     const newUser = await prisma.user.create({
-        data: { email, name, hashed },
+        data: { email, name, password : hashed },
     });
 
     //generate JWT token
@@ -77,8 +58,8 @@ userRoutes.post('/login', async(c) => {
         datasources: {
             db: { url: c.env.DATABASE_URL }, 
         },
-        extensions: [withAccelerate()],
-    });
+    
+    }).$extends(withAccelerate());
 
     //get data from request body
     const { email, password } = await c.req.json();
@@ -92,7 +73,7 @@ userRoutes.post('/login', async(c) => {
     }
 
     //check if password is correct
-    const isPasswordValid = await bcrypt.compare(password, existingUser.hashed);
+    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordValid) {
         return c.json({ message: 'Invalid password' }, 400);
     }

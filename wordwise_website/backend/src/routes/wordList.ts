@@ -5,7 +5,7 @@
  * 
  */
 import { Hono } from 'hono';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client/edge';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { verify as verifyToken } from 'hono/jwt';
 
@@ -54,8 +54,8 @@ wordListRoutes.post('/addnewword', async(c) => {
         datasources: {
             db: { url: c.env.DATABASE_URL }, 
         },
-        extensions: [withAccelerate()],
-    });
+
+    }).$extends(withAccelerate());
 
     const { word, meaning, exampleSentence } = await c.req.json();
 
@@ -66,14 +66,14 @@ wordListRoutes.post('/addnewword', async(c) => {
 
     // check if word already exists for that user
     const existingWord = await prisma.word.findFirst({
-        where: { word, userId },
+        where: { text : word, userId },
     });
 
     if (existingWord) {
         return c.json({ message: 'Word already exists' }, 400);
     }
     const newWord = await prisma.word.create({
-        data: { word, meaning, exampleSentence, userId },
+        data: { text : word, meaning, example :  exampleSentence, userId },
     });
 
     return c.json({ word: newWord, message: 'Word added successfully' }, 201);
@@ -85,8 +85,8 @@ wordListRoutes.get('/allwords', async(c) => {
         datasources: {
             db: { url: c.env.DATABASE_URL }, 
         },
-        extensions: [withAccelerate()],
-    });
+      
+    }).$extends(withAccelerate());
 
     const userId = c.get('userId');
     if(!userId) { 
