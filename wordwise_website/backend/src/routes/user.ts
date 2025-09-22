@@ -85,5 +85,24 @@ userRoutes.post('/login', async(c) => {
 
 });
 
+userRoutes.get('/getUserByEmail/:email', async(c) => {
+    const prisma = new PrismaClient({
+        datasources: {
+            db: { url: c.env.DATABASE_URL }, 
+        }}).$extends(withAccelerate());
+    const email = c.req.param('email');
+    
+    if(!email) { 
+        return c.json({ message: 'Email query parameter is required' }, 400);
+    }
+    const user = await prisma.user.findUnique({
+        where: { email },
+        select: { id: true, email: true, name: true }
+    });
+    if (!user) {
+        return c.json({ message: 'User not found' }, 404);
+    }
+    return c.json({ user }, 200);
+})
 
 export default userRoutes;

@@ -58,7 +58,7 @@ wordListRoutes.post('/addnewword', async(c) => {
     }).$extends(withAccelerate());
 
     const { word, meaning, exampleSentence } = await c.req.json();
-
+    
     const userId = c.get('userId');
     if(!userId) { 
         return c.json({ message: 'User not authenticated' }, 401);

@@ -12,25 +12,25 @@ app.use(express.json());
 const geminiAPIKEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({apiKey : geminiAPIKEY});
 
-//  https://backend.gghimanshu333.workers.dev
+const backendURL = "https://backend.gghimanshu333.workers.dev";
 
-const config = { 
-  credential : admin.credential.cert({
-    "type": process.env.FIREBASE_SERVICE_ACCOUNT_TYPE,
-    "project_id": process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
-    "private_key_id": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
-    "private_key": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
-    "client_email": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
-    "client_id":process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_ID,
-    "auth_uri": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_URI,
-    "token_uri": process.env.FIREBASE_SERVICE_ACCOUNT_TOKEN_URI,
-    "auth_provider_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_PROVIDER_X590_CENT_URL,
-    "client_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_X590_CERT_URL,
-    "universe_domain": process.env.FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
-  })
-}
-const firebaseApp = admin.apps.length ? admin.app() : admin.initializeApp(config);
-const allWordsDB = admin.firestore(firebaseApp);
+// const config = { 
+//   credential : admin.credential.cert({
+//     "type": process.env.FIREBASE_SERVICE_ACCOUNT_TYPE,
+//     "project_id": process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
+//     "private_key_id": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
+//     "private_key": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
+//     "client_email": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
+//     "client_id":process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_ID,
+//     "auth_uri": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_URI,
+//     "token_uri": process.env.FIREBASE_SERVICE_ACCOUNT_TOKEN_URI,
+//     "auth_provider_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_PROVIDER_X590_CENT_URL,
+//     "client_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_X590_CERT_URL,
+//     "universe_domain": process.env.FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
+//   })
+// }
+// const firebaseApp = admin.apps.length ? admin.app() : admin.initializeApp(config);
+// const allWordsDB = admin.firestore(firebaseApp);
 
 
 
@@ -40,9 +40,12 @@ const allWordsDB = admin.firestore(firebaseApp);
 app.get('/check/:email', async (req,res) => {
     const {email }= req.params;
     console.log(email);
+
+
     try {
-      const userRecord = await getAuth().getUserByEmail(email);
-      if(userRecord) { 
+      const userRecord = await fetch(`${backendURL}/getUserByEmail?email=${email}`);
+      
+      if(userRecord) {
         res.status(200).send({userExists : userRecord.emailVerified  })
       }
     } catch (error) {
@@ -63,10 +66,9 @@ app.get('/randomWord/:idx', async(req,res) => {
   
     const randomWordPrompt = `Give the english translation for the word ${word}. Answer should be in json format and i want the following things   
    {
-      germanWord : the word i gave to you, 
-      englishWord : English translation of that word , 
-      exampleSentenceEnglish : a sentence in english using that word, 
-      exampleSentenceGerman : german translation of exampleSentenceEnglish
+      word : the word i gave to you, 
+      meaning : English translation of that word , 
+      example : a sentence in german using that word (its english translation should also be there in brackets), 
 }
 `
     //using ai

@@ -1,17 +1,19 @@
 import "./common.css";
 // import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import {
-  collection,
-  getFirestore,
-  addDoc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+// import { initializeApp } from "firebase/app";
+// import { getAuth } from "firebase/auth";
+// import {
+//   collection,
+//   getFirestore,
+//   addDoc,
+//   query,
+//   where,
+//   getDocs,
+// } from "firebase/firestore";
 
-const backendBaseUrl = "https://wordwise-extension-backend-1.onrender.com";
+// const backendBaseUrl = "https://wordwise-extension-backend-1.onrender.com";
+const backendBaseUrl = "https://backend.gghimanshu333.workers.dev";
+
 //types
 type RandomWord = {
   word: string;
@@ -24,28 +26,28 @@ type newWord = {
 }
 
 //getting the env variables
-const apiKey = <string>process.env.API_KEY;
-const FIREBASE_API_KEY = <string>process.env.FIREBASE_API_KEY;
-const FIREBASE_AUTH_DOMAIN = <string>process.env.FIREBASE_AUTH_DOMAIN;
-const FIREBASE_PROJECT_ID = <string>process.env.FIREBASE_PROJECT_ID;
-const FIREBASE_STORAGE_BUCKET = <string>process.env.FIREBASE_STORAGE_BUCKET;
-const FIREBASE_SENDER_ID = <string>process.env.FIREBASE_SENDER_ID;
-const FIREBASE_APP_ID = <string>process.env.FIREBASE_APP_ID;
+// const apiKey = <string>process.env.API_KEY;
+// const FIREBASE_API_KEY = <string>process.env.FIREBASE_API_KEY;
+// const FIREBASE_AUTH_DOMAIN = <string>process.env.FIREBASE_AUTH_DOMAIN;
+// const FIREBASE_PROJECT_ID = <string>process.env.FIREBASE_PROJECT_ID;
+// const FIREBASE_STORAGE_BUCKET = <string>process.env.FIREBASE_STORAGE_BUCKET;
+// const FIREBASE_SENDER_ID = <string>process.env.FIREBASE_SENDER_ID;
+// const FIREBASE_APP_ID = <string>process.env.FIREBASE_APP_ID;
 
 //Firebase configuration
-const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: FIREBASE_SENDER_ID,
-  appId: FIREBASE_APP_ID,
-};
+// const firebaseConfig = {
+//   apiKey: FIREBASE_API_KEY,
+//   authDomain: FIREBASE_AUTH_DOMAIN,
+//   projectId: FIREBASE_PROJECT_ID,
+//   storageBucket: FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: FIREBASE_SENDER_ID,
+//   appId: FIREBASE_APP_ID,
+// };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const wordsDB = getFirestore(app);
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const auth = getAuth();
+// const wordsDB = getFirestore(app);
 let userID;
 let userDocID;
 const allWords: RandomWord[] = [];
@@ -185,80 +187,80 @@ async function generateRandomWord() {
   }
 }
 
-async function addNewWordToFirebase(newWord: RandomWord, userEmail: string) {
-  //get Collection ref where the email === userEmail
-  const collectionRef = collection(wordsDB, "users");
-  const currentUserDocQuery = query(
-    collectionRef,
-    where("email", "==", userEmail)
-  );
-  const currentUserDocRef = await getDocs(currentUserDocQuery);
-  let currentUserDocID = "";
-  currentUserDocRef &&
-  currentUserDocRef.forEach((item) => {
-    console.log(item);
-    // const itemPath = item._key.path.segments;
-      currentUserDocID = item.id;
-    });
+// async function addNewWordToFirebase(newWord: RandomWord, userEmail: string) {
+//   //get Collection ref where the email === userEmail
+//   const collectionRef = collection(wordsDB, "users");
+//   const currentUserDocQuery = query(
+//     collectionRef,
+//     where("email", "==", userEmail)
+//   );
+//   const currentUserDocRef = await getDocs(currentUserDocQuery);
+//   let currentUserDocID = "";
+//   currentUserDocRef &&
+//   currentUserDocRef.forEach((item) => {
+//     console.log(item);
+//     // const itemPath = item._key.path.segments;
+//       currentUserDocID = item.id;
+//     });
 
 
 
     
-    console.log("curreunt user",currentUserDocRef,currentUserDocID)
-    if(currentUserDocID.length > 0) {
-      const modifiedWord = { 
-        word : newWord.word, 
-        definition : newWord.definition, 
-        example : newWord.example,
-        userID : currentUserDocID,
-      } 
-      try {
-        const response = await fetch(`${backendBaseUrl}/addWord`, { 
-          method: 'POST', 
-          headers: { 
+//     console.log("curreunt user",currentUserDocRef,currentUserDocID)
+//     if(currentUserDocID.length > 0) {
+//       const modifiedWord = { 
+//         word : newWord.word, 
+//         definition : newWord.definition, 
+//         example : newWord.example,
+//         userID : currentUserDocID,
+//       } 
+//       try {
+//         const response = await fetch(`${backendBaseUrl}/addWord`, { 
+//           method: 'POST', 
+//           headers: { 
   
-            "Content-Type" : "application/json",
-          },
-          body : JSON.stringify(modifiedWord)
+//             "Content-Type" : "application/json",
+//           },
+//           body : JSON.stringify(modifiedWord)
           
-        })
+//         })
 
-        if(response)  { 
-          console.log(response);
-        }
-      } catch (error) {
-        console.error("Error adding new Word", error);
-      }
+//         if(response)  { 
+//           console.log(response);
+//         }
+//       } catch (error) {
+//         console.error("Error adding new Word", error);
+//       }
     
 
       
       
       
 
-    }
+//     }
 
-}
+// }
 
-async function checkEmail() {
-  const userEmail = localStorage.getItem("wordwiseUserEmail");
-  if (!userEmail) {
-    return -1;
-  } else {
-    //call to the backend api to check whether user exists or not
-    // for now lets assume it does
-    try {
-      const response = await fetch(`${backendBaseUrl}/check/${userEmail}`);
-      const responseData = await response.json();
-      console.log(responseData);
-      const doesUserExists = responseData ? responseData.userExists : false;
+// async function checkEmail() {
+//   const userEmail = localStorage.getItem("wordwiseUserEmail");
+//   if (!userEmail) {
+//     return -1;
+//   } else {
+//     //call to the backend api to check whether user exists or not
+//     // for now lets assume it does
+//     try {
+//       const response = await fetch(`${backendBaseUrl}/check/${userEmail}`);
+//       const responseData = await response.json();
+//       console.log(responseData);
+//       const doesUserExists = responseData ? responseData.userExists : false;
 
-      if (doesUserExists) {
-        return { email: userEmail };
-      } else {
-        return -1;
-      }
-    } catch (error) {
-      console.error("some error while fetching the user");
-    }
-  }
-}
+//       if (doesUserExists) {
+//         return { email: userEmail };
+//       } else {
+//         return -1;
+//       }
+//     } catch (error) {
+//       console.error("some error while fetching the user");
+//     }
+//   }
+// }
