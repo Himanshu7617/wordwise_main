@@ -4,7 +4,7 @@ import { useWindowScroll } from 'react-use';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { Link } from 'react-router-dom';
-import { useFirebase } from '../context/FirebaseContext';
+import { wordwiseContext } from '../context/GlobalContext';
 
 const Header = () => {
 

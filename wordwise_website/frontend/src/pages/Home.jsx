@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import { Link,  useNavigate } from "react-router-dom"
-import { useFirebase } from "../context/FirebaseContext"
+import { wordwiseContext} from "../context/GlobalContext"
 
 import cardIMG from '/images/card_1.png';
 import footerSVG from '/svgs/footerCurve.svg'
@@ -14,6 +14,7 @@ import mdClock from "/images/mdClock.png";
 import hor1 from "/images/hor1.png";
 import hor2 from "/images/hor2.png";
 import hor3 from "/images/hor3.png";
+
 gsap.registerPlugin(MotionPathPlugin, Flip);
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +22,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
 
-    const firebase = useContext(useFirebase);
+    const wordwiseCtxt = useContext(wordwiseContext);
     const navigate = useNavigate();
 
     const rectRef = useRef(null);
@@ -31,7 +32,7 @@ const Home = () => {
     useGSAP(() => {
 
 
-        if (!firebase.loading) {
+        if (oContainerRef.current && rectRef.current && clockContainerRef.current) {
             const heroImgCards = gsap.utils.toArray('.cardImg');
             const horizontalScrollDivs = gsap.utils.toArray('.horizontal-scroll-divs');
             const cardTrainImages = gsap.utils.toArray('#cardTrainImages');
@@ -144,10 +145,10 @@ const Home = () => {
     }, [])
 
     useEffect(() => {
-        if (firebase.isLoggedIn) {
+        if (wordwiseCtxt.isLoggedIn) {
             navigate('/dashboard', { replace: true });
         }
-    }, [firebase, navigate])
+    }, [wordwiseCtxt, navigate])
 
 
 

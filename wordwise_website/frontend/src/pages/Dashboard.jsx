@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useFirebase } from "../context/FirebaseContext"
+import { wordwiseContext} from "../context/GlobalContext"
 import { useNavigate, Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import AccordianUI from "../components/AccordianUI";
@@ -15,9 +15,9 @@ import Header from "../components/Header";
 
 const Dashboard = () => {
 
-  const firebase = useContext(useFirebase);
+  const wordwiseCtxt = useContext(wordwiseContext);
   const navigate = useNavigate();
-  const { allWords } = useContext(useFirebase);
+  const { allWords } = useContext(wordwiseContext);
   const [searchWord , setSearchWord] = useState('');
   const [searching, setSearching ] = useState(false);
   const [foundWord , setFoundWord ] = useState({});
@@ -36,11 +36,11 @@ const Dashboard = () => {
   },[navHidden])
 
   useEffect(() => {
-    if(!firebase.isLoggedIn && firebase.loading === false) {
+    if(!wordwiseCtxt.isLoggedIn && wordwiseCtxt.loading === false) {
 
       navigate('/');
     }
-  }, [firebase, navigate]);
+  }, [wordwiseCtxt, navigate]);
 
   useEffect(()=>{
     if(currentScrollY < lastScrollY  ){
@@ -56,7 +56,7 @@ const Dashboard = () => {
     e.preventDefault();
 
     
-    const searchedAnswer = firebase.allWords.find(x => x.word.localeCompare(searchWord, 'en', {sensitivity : 'base'}) === 0);
+    const searchedAnswer = wordwiseCtxt.allWords.find(x => x.text.localeCompare(searchWord, 'en', {sensitivity : 'base'}) === 0);
     
     setSearching(true);
     if (searchedAnswer) {
@@ -99,14 +99,14 @@ const Dashboard = () => {
             
           </div>
           <div id="words-container" className="flex flex-col gap-4 w-[90%] justify-start items-center ">
-            {searching === true && (foundWord.word ?
-              <AccordianUI title = {foundWord.word} definition={ foundWord.definition} translation = {foundWord.translation} example = {foundWord.example} />
+            {searching === true && (foundWord.text ?
+              <AccordianUI title = {foundWord.text} meaning={ foundWord.meaning}  example = {foundWord.example} />
               : <div> Word not found! </div>)
             }
             
             { searching === false && (allWords.length > 0 ? allWords.map((word, i)=> (
               <div key={i} className="w-full h-fit min-h-[8vh] flex flex-col ">
-                <AccordianUI title= {word.word} definition = {word.definition} translation = {word.translation} example = {word.example} />
+                <AccordianUI title= {word.text} meaning = {word.meaning} example = {word.example} />
                 </div>
             )) :
             <div> No words found yet!</div>)}
@@ -114,14 +114,12 @@ const Dashboard = () => {
         </div>
         <div id="right-panel" className="w-[30%] h-fit min-h-[60vh] hidden lg:flex flex-col justify-evenly items-center rounded-3xl bg-blue-500">
             <div className="bg-blue-50 w-4/5 h-fit min-h-6 p-2 flex justify-start items-center rounded-lg">
-              <p><b>Word: </b>{allWords.length && allWords[0].word}  </p>
+              <p><b>Word: </b>{allWords.length && allWords[0].text}  </p>
             </div>
             <div className="bg-blue-50 w-4/5 h-fit min-h-6 p-2 flex justify-start items-center rounded-lg">
-              <p><b>Translation: </b>{allWords.length && allWords[0].translation}  </p>
+              <p><b>Meaning: </b>{allWords.length && allWords[0].meaning}  </p>
             </div>
-            <div className="bg-blue-50 w-4/5 h-fit min-h-6 p-2 flex justify-start items-center rounded-lg">
-              <p><b>Definition: </b>{allWords.length && allWords[0].definition}  </p>
-            </div>
+          
             <div className="bg-blue-50 w-4/5 h-fit min-h-6 p-2 flex justify-start items-center rounded-lg">
               <p><b>Example: </b>{allWords.length && allWords[0].example}  </p>
             </div>

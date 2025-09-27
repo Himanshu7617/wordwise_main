@@ -4,7 +4,7 @@ import gsap from 'gsap';
 
 
 
-const FlashCard = ( {word, translation, definition, example}) => {
+const FlashCard = ( {word, meaning, example}) => {
 
     const [backSide, setBackSide] = useState(true);
 
@@ -37,13 +37,10 @@ const FlashCard = ( {word, translation, definition, example}) => {
     </div>}
     
     {!backSide && <div className="text-[0.7rem] md:text-[1rem] lg:text-[1.2rem] m-2 bg-blue-50 w-fit min-w-full h-auto max-h-[4rem] overflow-auto p-2 flex justify-start items-center rounded-lg">
-      <p><b>Translation: </b>{translation}  </p>
+      <p><b>Meaning: </b>{meaning}  </p>
     </div>}
     
-    {!backSide && <div className="text-[0.7rem] md:text-[1rem] lg:text-[1.2rem] m-2 bg-blue-50 w-fit min-w-full h-auto max-h-[4rem] overflow-auto p-2 flex justify-start items-center rounded-lg">
-      <p><b>Definition: </b>{definition}  </p>
-    </div>}
-    
+   
     {!backSide && <div className="text-[0.7rem] md:text-[1rem] lg:text-[1.2rem] m-2 bg-blue-50 w-fit min-w-full h-auto max-h-[4rem] overflow-auto p-2 flex justify-start items-center rounded-lg">
       <p><b>Example: </b>{example}  </p>
     </div>}

@@ -1,11 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import FlashCard from "../components/FlashCard"
 import Header from "../components/Header"
-import { useFirebase } from "../context/FirebaseContext"
+import { wordwiseContext} from "../context/GlobalContext"
 
 const FlashCards = () => {
 
-  const { allWords } = useContext(useFirebase);
+  const { allWords } = useContext(wordwiseContext);
   const [flashcardsContainerWidth, setFlashcardsContainerWidth] = useState();
   const [flashcardWidth, setFlashcardWidth] = useState();
   const [currCardIdx , setCurrCardIdx] = useState(0);
@@ -52,7 +52,7 @@ const FlashCards = () => {
         }}
          key={i} 
          className={`w-[60%] md:w-[40%] lg:w-[30%] duration-500 h-fit absolute pointer-events-none top-[20%] `}>
-          <FlashCard key={i} word={word.word} translation={word.translation} definition={word.definition} example={word.example}/>
+          <FlashCard key={i} word={word.text} meaning={word.meaning} example={word.example}/>
         </div>) 
       })}
 

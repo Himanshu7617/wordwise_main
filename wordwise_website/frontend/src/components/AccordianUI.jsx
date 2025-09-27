@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CiCirclePlus } from "react-icons/ci";
 
 
-const AccordianUI = ({ title, definition, translation, example }) => {
+const AccordianUI = ({ title, meaning, example }) => {
   const [active, setActive] = useState(false);
 
   return (
@@ -14,13 +14,10 @@ const AccordianUI = ({ title, definition, translation, example }) => {
         <span className={`absolute right-0 text-3xl ${active && 'rotate-45'} transition-all ease-in-out ${active && 'text-red-700'} hover:text-purple-400`} ><CiCirclePlus /></span>
       </div>
       {active && <div className=' py-4 w-full h-fit min-h-[8vh] flex flex-col'>
+       
         <div><p>
-          <b>Translation: </b>
-          {translation}
-        </p></div>
-        <div><p>
-          <b>Definition: </b>
-          {definition}
+          <b>Meaning: </b>
+          {meaning}
         </p></div>
         <div><p>
           <b>Example: </b>

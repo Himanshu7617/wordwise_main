@@ -11,18 +11,18 @@ import "./common.css";
 //   getDocs,
 // } from "firebase/firestore";
 
-// const backendBaseUrl = "https://wordwise-extension-backend-1.onrender.com";
-const backendBaseUrl = "https://backend.gghimanshu333.workers.dev";
+const extensionBackendBaseUrl = "https://wordwise-extension-backend-1.onrender.com";
+const websiteBackendBaseUrl = "https://backend.gghimanshu333.workers.dev";
 
 //types
 type RandomWord = {
   word: string;
-  definition: string;
+  meaning: string;
   example: string;
 };
 type newWord = { 
   word: string, 
-  definition : string,
+  meaning : string,
 }
 
 //getting the env variables
@@ -67,8 +67,8 @@ const emailSubmitButton = document.getElementById(
   "email-submit-button"
 ) as HTMLButtonElement;
 const wordPNode = document.getElementById("word") as HTMLParagraphElement;
-const definitionPNode = document.getElementById(
-  "definition"
+const meaningPNode = document.getElementById(
+  "meaning"
 ) as HTMLParagraphElement;
 const examplePNode = document.getElementById("example") as HTMLParagraphElement;
 const errorPNode = document.getElementById("error-para") as HTMLParagraphElement;
@@ -80,22 +80,32 @@ const isRandomWordIndex = localStorage.getItem("wordwiseRandomWordIndex");
 const randomWordIndex = isRandomWordIndex ? parseInt(isRandomWordIndex) : 0;
 
 //at startup
-function displayRandomWord() {
-  generateRandomWord().then((responseData) => {
+async function displayRandomWord() {
+  generateRandomWord().then( async (responseData) => {
     wordPNode.innerHTML = responseData?.word;
-    definitionPNode.innerHTML = responseData?.definition;
+    meaningPNode.innerHTML = responseData?.meaning; 
     examplePNode.innerHTML = <string>responseData?.example;
 
-    //adding the new word to firestore
-    addNewWordToFirebase(<RandomWord>responseData, <string>localStorage.getItem('wordwiseUserEmail'));
+    const newWord = {
+      word : responseData?.word, 
+      meaning : responseData?.meaning, 
+      exampleSentence : responseData?.example
+      
+    }
+
+    const isNewWordAdded = await fetch(`${websiteBackendBaseUrl}/wordlist/addnewword`, {
+      method : "POST", 
+      body : JSON.stringify(newWord)
+    })
+    console.log(isNewWordAdded);
 
     // adding this new word to chrome storage
     chrome.storage.local.get(['wordwiseAllWordsList'], (res) => { 
       const storedWordsList = res.wordwiseAllWordsList || [];
       
       const modifiedWord = {
-        word : responseData?.definition, 
-        definition : responseData?.word,
+        word : responseData?.meaning, 
+        meaning : responseData?.word,
       }
       if(storedWordsList.length >= 0 && storedWordsList.findIndex((word : newWord )=> word.word === modifiedWord.word) < 0) { 
         storedWordsList.push(modifiedWord);
@@ -139,13 +149,12 @@ async function handleEmailSubmitEvent() {
   }
   try {
     const userEmail = userEmailInput.value;
-    const response = await fetch(`${backendBaseUrl}/check/${userEmail}`);
-    const responseData = await response.json();
-    const doesUserExists = responseData ? responseData.userExists : false;
+    const response = await fetch(`${websiteBackendBaseUrl}/auth/getUserByEmail/${userEmail}`);
+    
     if(response.status === 500 || response.status === 404) { 
       errorPNode.innerHTML = "This email doesn't have any account. Please sign up!!!";
     }
-    if (doesUserExists) {
+    if (response.ok) {
       localStorage.setItem("wordwiseUserEmail", userEmail);
       //make email form hidden
       emailFormContainer.classList.remove("flex");
@@ -169,16 +178,16 @@ async function handleEmailSubmitEvent() {
 async function generateRandomWord() {
   try {
     const response = await fetch(
-      `${backendBaseUrl}/randomWord/${randomWordIndex}`
+      `${extensionBackendBaseUrl}/randomWord/${randomWordIndex}`
     );
     const text = await response.text(); // get it as raw text
     const responseData = JSON.parse(text.trim()); // remove \n and parse
     console.log(responseData);
     if (response && responseData) {
       const newWord = {
-        word: responseData?.["germanWord"],
-        definition: responseData?.["englishWord"],
-        example: `${responseData?.["exampleSentenceEnglish"]} ( ${responseData?.["exampleSentenceGerman"]} )`,
+        word: responseData?.["word"],
+        meaning: responseData?.["meaning"],
+        example: `${responseData?.example?.["german"]} ( ${responseData?.example?.["english"]} )`,
       };
       return newWord;
     }
@@ -210,7 +219,7 @@ async function generateRandomWord() {
 //     if(currentUserDocID.length > 0) {
 //       const modifiedWord = { 
 //         word : newWord.word, 
-//         definition : newWord.definition, 
+//         meaning : newWord.meaning, 
 //         example : newWord.example,
 //         userID : currentUserDocID,
 //       } 

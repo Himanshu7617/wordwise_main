@@ -1,35 +1,45 @@
 import { useContext, useEffect } from "react";
 import { Card, Input,  Button,  Typography } from "@material-tailwind/react";
-import { useFirebase } from "../context/FirebaseContext";
+import { wordwiseContext } from "../context/GlobalContext";
 import { Link, useNavigate } from "react-router-dom";
 
  
 const SignUp = () => {
 
   //using the context api here
-  const firebase = useContext(useFirebase);
+  const wordwiseCtxt = useContext(wordwiseContext);
   const navigate = useNavigate();
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    
-    //calling the signup function 
-    
-    const success = firebase.createUser( firebase.email, firebase.password);
-    if(success){
-      firebase.addUserIntoDatabase(firebase.name, firebase.email, "German", firebase.avatarIndex);
-      
-    }
 
+    if(wordwiseCtxt.name === '' || wordwiseCtxt.email === '' || wordwiseCtxt.password === ''){
+      alert("Please fill all the fields");
+      return;
+    }
+    
+    
+   
+    const success = wordwiseCtxt.signUpUser( wordwiseCtxt.name , wordwiseCtxt.email, wordwiseCtxt.password);
+    if(!success){
+      // wordwiseCtxt.addUserIntoDatabase(wordwiseCtxt.name, wordwiseCtxt.email, "German", wordwiseCtxt.avatarIndex);
+      navigate('/home');
+    }
+    navigate('/dashboard');
+    wordwiseCtxt.setEmail('');
+    wordwiseCtxt.setName('');
+    wordwiseCtxt.setPassword('');
+    //
+    
   
   }
 
   
   useEffect(() => {
-    if(firebase.isLoggedIn){
+    if(wordwiseCtxt.isLoggedIn){
       navigate('/dashboard');
     }
-  },[firebase, navigate])
+  },[wordwiseCtxt, navigate])
 
   return (
     <div className=" w-full h-[100vh] flex justify-center items-center">
@@ -49,8 +59,8 @@ const SignUp = () => {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            value={firebase.name}
-            onChange= {(e) => firebase.setName(e.target.value)}
+            value={wordwiseCtxt.name}
+            onChange= {(e) => wordwiseCtxt.setName(e.target.value)}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Your Email
@@ -62,8 +72,8 @@ const SignUp = () => {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            value={firebase.email}
-            onChange={(e) => firebase.setEmail(e.target.value)}
+            value={wordwiseCtxt.email}
+            onChange={(e) => wordwiseCtxt.setEmail(e.target.value)}
           />
           <Typography variant="h6" color="blue-gray" className="-mb-3">
             Password
@@ -76,8 +86,8 @@ const SignUp = () => {
             labelProps={{
               className: "before:content-none after:content-none",
             }}
-            value={firebase.password}
-            onChange={(e) => firebase.setPassword(e.target.value)}
+            value={wordwiseCtxt.password}
+            onChange={(e) => wordwiseCtxt.setPassword(e.target.value)}
           />
         </div>
         <Button onClick={handleSignUp} className="mt-6" fullWidth>

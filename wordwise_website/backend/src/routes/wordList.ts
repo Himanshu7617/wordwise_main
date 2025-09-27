@@ -36,9 +36,9 @@ wordListRoutes.use(async (c, next) => {
 
     try {
         const payload = await verifyToken(token, c.env.JWT_SECRET);
-        if(payload.id) { 
+        if(payload.userId) { 
             
-            c.set('userId', payload.id as string);
+            c.set('userId', payload.userId as string);
         }
 
     } catch (error) {
@@ -73,7 +73,7 @@ wordListRoutes.post('/addnewword', async(c) => {
         return c.json({ message: 'Word already exists' }, 400);
     }
     const newWord = await prisma.word.create({
-        data: { text : word, meaning, example :  exampleSentence, userId },
+    data: { text : word, meaning, example :  exampleSentence, userId },
     });
 
     return c.json({ word: newWord, message: 'Word added successfully' }, 201);

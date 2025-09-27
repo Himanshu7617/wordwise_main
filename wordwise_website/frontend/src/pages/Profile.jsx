@@ -1,5 +1,5 @@
 import { useContext, useState } from "react"
-import { useFirebase } from "../context/FirebaseContext"
+import { wordwiseContext} from "../context/GlobalContext"
 import Header from "../components/Header";
 // import { MdEdit } from "react-icons/md";
 // import { RxCrossCircled } from "react-icons/rx";
@@ -14,9 +14,10 @@ const Profile = () => {
   
   const allProfileSrcs = [avatar1, avatar2];
   
-  const firebase = useContext(useFirebase);
+  const wordwiseCtxt = useContext(wordwiseContext);
   const [active, setActive] = useState(0);
 
+  console.log("user from profile page", wordwiseCtxt.user);
 
 
 
@@ -49,15 +50,15 @@ const Profile = () => {
         </div>
         <div className="w-fit min-w-3/5 h-fit min-h-[5rem]  flex flex-col justify-start p-4 text-[0.7rem] md:text-2xl lg:text-3xl border-l-4 border-blue-600">
           <div className=" h-fit w-full ">
-            <p><b>Name :&nbsp;</b>{firebase.user && firebase.user.displayName}</p>
-            <p><b>Email :&nbsp;</b>{firebase.user && firebase.user.email}</p>
+            <p><b>Name :&nbsp;</b>{wordwiseCtxt.user && wordwiseCtxt.user.name}</p>
+            <p><b>Email :&nbsp;</b>{wordwiseCtxt.user && wordwiseCtxt.user.email}</p>
           </div>
           <div className="flex gap-4 items-center "><b>Language :</b> <p >German</p>
             <span className="w-fit h-fit inline-block overflow-hidden "><img className="w-4 h-4 lg:w-8 lg:h-8 object-cover" alt="German flag symbol" src={germanFlag} /></span>
           </div>
 
 
-          <button className="w-fit h-fit bg-black p-3 rounded-2xl my-4 px-8 text-white hover:text-pink-300" onClick={firebase.logOut}>logout</button>
+          <button className="w-fit h-fit bg-black p-3 rounded-2xl my-4 px-8 text-white hover:text-pink-300" onClick={wordwiseCtxt.logOut}>logout</button>
 
 
         </div>
