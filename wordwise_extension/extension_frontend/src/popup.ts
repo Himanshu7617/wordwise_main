@@ -95,6 +95,10 @@ async function displayRandomWord() {
 
     const isNewWordAdded = await fetch(`${websiteBackendBaseUrl}/wordlist/addnewword`, {
       method : "POST", 
+      headers : {
+        "Content-Type" : "application/json",
+        "Authorization" : `Bearer ${localStorage.getItem('wordwiseUserToken')}`
+      },
       body : JSON.stringify(newWord)
     })
     console.log(isNewWordAdded);
@@ -155,6 +159,10 @@ async function handleEmailSubmitEvent() {
       errorPNode.innerHTML = "This email doesn't have any account. Please sign up!!!";
     }
     if (response.ok) {
+      const responseData = await response.json();
+      console.log("email res : " ,responseData);
+
+      localStorage.setItem("wordwiseUserToken", responseData.token);
       localStorage.setItem("wordwiseUserEmail", userEmail);
       //make email form hidden
       emailFormContainer.classList.remove("flex");
@@ -185,9 +193,9 @@ async function generateRandomWord() {
     console.log(responseData);
     if (response && responseData) {
       const newWord = {
-        word: responseData?.["word"],
-        meaning: responseData?.["meaning"],
-        example: `${responseData?.example?.["german"]} ( ${responseData?.example?.["english"]} )`,
+        word: responseData?.["germanWord"],
+        meaning: responseData?.["englishWord"],
+        example: `${responseData?.["exampleSentenceGerman"]} ( ${responseData?.["exampleSentenceEnglish"]} )`,
       };
       return newWord;
     }

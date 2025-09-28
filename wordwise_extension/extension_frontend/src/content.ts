@@ -2,7 +2,7 @@
 
 type newWord = { 
   word: string, 
-  definition : string,
+  meaning : string,
 }
 
 // alert("from content script");
@@ -38,7 +38,8 @@ function handleChangeWordEvent(node: Node) {
       let text = node.textContent || "";
       allWords.forEach((item : newWord) => {
         if (text.includes(item.word)) {
-          text = text.replaceAll(item.word, item.definition);
+          
+          text = text.replaceAll(item.word, item.meaning);
         }
       });
       node.textContent = text;

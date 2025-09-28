@@ -6,6 +6,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+//what is this doing 
+/**
+ * checking whether user exists or not by email
+ * getting random word
+ */
+
 const app = express();
 app.use(express.json());
 
@@ -14,23 +20,6 @@ const ai = new GoogleGenAI({ apiKey: geminiAPIKEY });
 
 const backendURL = "https://backend.gghimanshu333.workers.dev";
 
-// const config = {
-//   credential : admin.credential.cert({
-//     "type": process.env.FIREBASE_SERVICE_ACCOUNT_TYPE,
-//     "project_id": process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
-//     "private_key_id": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
-//     "private_key": process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
-//     "client_email": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
-//     "client_id":process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_ID,
-//     "auth_uri": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_URI,
-//     "token_uri": process.env.FIREBASE_SERVICE_ACCOUNT_TOKEN_URI,
-//     "auth_provider_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_AUTH_PROVIDER_X590_CENT_URL,
-//     "client_x509_cert_url": process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_X590_CERT_URL,
-//     "universe_domain": process.env.FIREBASE_SERVICE_ACCOUNT_UNIVERSE_DOMAIN
-//   })
-// }
-// const firebaseApp = admin.apps.length ? admin.app() : admin.initializeApp(config);
-// const allWordsDB = admin.firestore(firebaseApp);
 
 //checking whether user exists or not by email
 app.get("/check/:email", async (req, res) => {
@@ -95,54 +84,6 @@ app.get("/randomWord/:idx", async (req, res) => {
   }
 });
 
-// app.post("/addWord", async (req, res) => {
-//   /**
-//    * things i need to add the data to the respective user's collection
-//    * user email and password 
-//    * new Word
-//    * check in the front end that the word you tryna add doesn't already exist
-//    */
-
-//   const { token, word, definition, example } = req.body;
-
-  
-//       if (!token) {
-//           return c.json({ message: 'Invalid authorization header format' }, 401);
-//       }
-  
-//       try {
-//           const payload = await verifyToken(token, c.env.JWT_SECRET);
-//           if(payload.userId) { 
-              
-//               c.set('userId', payload.userId);
-//           }
-  
-//       } catch (error) {
-//           return c.json({ message: 'Invalid or expired token' }, 401);
-//       }
-  
-
-
-//   try {
-//     const newWord = {
-//       word: word,
-//       definition: definition,
-//       example: example,
-//     };
-
-//     const response = await fetch(`${backendURL}/wordlist/addnewword`, {
-//       method : "POST", 
-//       body : JSON.stringify(newWord)
-//     })
-
-//     if (response) {
-//       res.status(201).json({ message: "added successfully", word: response });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error);
-//   }
-// });
 
 app.listen(3000, () => {
   console.log("app is listening at 3000");

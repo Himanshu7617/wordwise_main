@@ -102,7 +102,9 @@ userRoutes.get('/getUserByEmail/:email', async(c) => {
     if (!user) {
         return c.json({ message: 'User not found' }, 404);
     }
-    return c.json({ user }, 200);
+    const token = await sign({ userId: user.id, userEmail: user.email }, c.env.JWT_SECRET);
+
+    return c.json({ token, user: { id: user.id, email: user.email, name: user.name }, message: "User does exists" }, 200);
 })
 
 export default userRoutes;
