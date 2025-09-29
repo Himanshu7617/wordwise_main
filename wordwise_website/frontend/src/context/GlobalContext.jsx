@@ -61,7 +61,7 @@ const GlobalContext = (props) => {
                 method: "POST",
                 body: JSON.stringify({ email, password })
             });
-            if (response) {
+            if (response.ok) {
                 const res = await response.json();
                 localStorage.setItem("wordwiseToken", `Bearer ${res.token}`);
 
