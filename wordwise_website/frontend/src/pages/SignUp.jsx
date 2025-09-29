@@ -25,7 +25,7 @@ const SignUp = () => {
       // wordwiseCtxt.addUserIntoDatabase(wordwiseCtxt.name, wordwiseCtxt.email, "German", wordwiseCtxt.avatarIndex);
       navigate('/home');
     }
-    navigate('/dashboard');
+    //navigate('/dashboard');
     wordwiseCtxt.setEmail('');
     wordwiseCtxt.setName('');
     wordwiseCtxt.setPassword('');
