@@ -81,6 +81,7 @@ const GlobalContext = (props) => {
                 return false;
             }
         } catch (error) {
+            setIsLoggedIn(false);
             console.error(error);
             return false;
         }
