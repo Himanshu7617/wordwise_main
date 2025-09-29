@@ -1,23 +1,21 @@
 //get all the words that are needed to be changed
 
-type newWord = { 
-  word: string, 
-  meaning : string,
-}
+type newWord = {
+  word: string;
+  meaning: string;
+};
 
 // alert("from content script");
-const allWords : newWord[] = [];
-chrome.storage.local.get(['wordwiseAllWordsList'], (res) => { 
+const allWords: newWord[] = [];
+chrome.storage.local.get(["wordwiseAllWordsList"], (res) => {
   const tempList = res.wordwiseAllWordsList || [];
 
-  if(tempList.length > 0) { 
-    tempList.forEach((item : newWord) => { 
-      allWords.push(item)
-    })
+  if (tempList.length > 0) {
+    tempList.forEach((item: newWord) => {
+      allWords.push(item);
+    });
   }
-  
-})
-
+});
 
 // process nodes and change the word
 function handleProcessNodeEvent(node: HTMLElement | ChildNode) {
@@ -31,23 +29,28 @@ function handleProcessNodeEvent(node: HTMLElement | ChildNode) {
 }
 
 function handleChangeWordEvent(node: Node) {
-  
-    
+  if (node.nodeType === Node.TEXT_NODE) {
+    let text = node.textContent || "";
+    allWords.forEach((item: newWord) => {
+      if (text.includes(item.word)) {
+        console.log(`Replacing ${item.word} with ${item.meaning}`);
+        text = text.replaceAll(item.word, item.meaning);
+      }
+    });
+    node.textContent = text;
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    const el = node as HTMLElement;
 
-    if (node.nodeType === Node.TEXT_NODE) {
-      let text = node.textContent || "";
-      allWords.forEach((item : newWord) => {
-        if (text.includes(item.word)) {
-          
-          text = text.replaceAll(item.word, item.meaning);
-        }
-      });
-      node.textContent = text;
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      node.childNodes.forEach((child) => handleChangeWordEvent(child));
+    // Skip input/textarea/contentEditable
+    if (
+      el.tagName === "INPUT" ||
+      el.tagName === "TEXTAREA" ||
+      el.isContentEditable
+    ) {
+      return;
     }
-   
-  
+    node.childNodes.forEach((child) => handleChangeWordEvent(child));
+  }
 }
 
 //observing changes in the dom
@@ -78,9 +81,8 @@ const config = {
   subtree: true,
 };
 
-
-// chrome.storage.sync.get('wordwiseUserEmail', (email) => { 
-//   if(email.length > 0){ 
+// chrome.storage.sync.get('wordwiseUserEmail', (email) => {
+//   if(email.length > 0){
 //     observer.observe(document, config);
 //   }
 // })
