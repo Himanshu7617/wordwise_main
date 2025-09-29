@@ -22,7 +22,7 @@ const Login = () => {
       return;
     }
 
-    navigate('/dashboard');
+   // navigate('/dashboard');
     wordwiseCtxt.setEmail('');
     wordwiseCtxt.setPassword('');
   }
