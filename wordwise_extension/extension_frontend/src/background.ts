@@ -3,7 +3,7 @@
 chrome.runtime.onInstalled.addListener(( { reason } ) => { 
     if (reason === 'install') { 
         chrome.tabs.create( { 
-            url : "https://mini-project-sepia-nine.vercel.app/"
+            url : "https://www.wordwise.foo/"
         });
         localStorage.setItem('wordwiseRandomWordIndex','0');
         chrome.storage.local.set({wordwiseAllWordsList : []})

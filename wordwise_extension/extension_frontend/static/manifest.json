@@ -4,6 +4,10 @@
   "description": "Extension that help you learn German by slowly converting your webpages content to german",
   "version": "0.1.0",
   "permissions": ["storage", "scripting", "tabs"],
+  "icons": {
+    "48": "assets/icon_48.png",
+    "128": "assets/icon_128.png"
+  },
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
-import { Link,  useNavigate } from "react-router-dom"
-import { wordwiseContext} from "../context/GlobalContext"
+import { Link, useNavigate } from "react-router-dom"
+import { wordwiseContext } from "../context/GlobalContext"
+import { FaDownload } from "react-icons/fa6";
 
 import cardIMG from '/images/card_1.png';
 import footerSVG from '/svgs/footerCurve.svg'
@@ -14,7 +15,6 @@ import mdClock from "/images/mdClock.png";
 import hor1 from "/images/hor1.png";
 import hor2 from "/images/hor2.png";
 import hor3 from "/images/hor3.png";
-import { ToastContainer } from "react-toastify";
 
 gsap.registerPlugin(MotionPathPlugin, Flip);
 gsap.registerPlugin(ScrollTrigger);
@@ -177,6 +177,10 @@ const Home = () => {
                         <Link to='/signup' className=" text-cyan-600"> Sign Up</Link> /
                         <Link to='/login' className=" text-cyan-600"> Login</Link>
                     </div>
+
+                    <a href="https://drive.google.com/uc?export=download&id=1n6ht4Ypsx3228K-mzM9-RAsVyR5vgtrH" className="flex items-center gap-2 m-[-50px] border-2 p-2 hover:bg-black cursor-pointer text-cyan-600  hover:text-white border-black rounded-md"> <FaDownload />Download</a>
+
+
                     <div id='cardTrain' className='w-full h-[16rem] flex flex-shrink-0 overflow-hidden absolute bottom-[-7rem]'>
                         {[0, 1, 2, 3, 4, 5, 6].map((e, _) => (
                             <div key={_} id="cardTrainImages" className="w-[8rem] md:w-[16rem]  h-full flex flex-shrink-0 justify-center items-center ">
@@ -217,7 +221,7 @@ const Home = () => {
                                 <b>N</b>
                             </span>
                             <span id='learn-container' className="rounded-2xl overflow-hidden row-start-1 col-start-2">
-                             <img src={hor2} alt="new word demo"  className="h-full"/>
+                                <img src={hor2} alt="new word demo" className="h-full" />
                             </span>
                             <span id='learn-container' className="flex justify-start items-end lg:items-center text-[2rem] md:text-[2.5rem] lg:text-[3.6rem] font-titanOne col-start-2 row-start-2">
                                 <p>E&nbsp;W&nbsp;&nbsp;W&nbsp;O&nbsp;R&nbsp;D&nbsp;S&nbsp;</p>
@@ -234,10 +238,10 @@ const Home = () => {
                     </div>
                     <div className="horizontal-scroll-divs w-[100vw] h-[100vh] flex flex-col lg:flex-row  justify-evenly items-center p-8  ">
                         <div className="w-[80%] lg:w-[45%] h-[40vh] z-40 lg:h-[70vh]  flex flex-col justify-center items-center gap-4 lg:gap-0 lg:items-start rounded-2xl overflow-hidden">
-                         <img 
-                            src={hor3}
-                            className="h-full "
-                         />
+                            <img
+                                src={hor3}
+                                className="h-full "
+                            />
                         </div>
                         <div className="w-[80%] lg:w-[45%] h-[40vh] lg:h-[70vh] text-[2rem] md:text-[3rem] lg:text-[4rem] font-titanOne leading-none ">
                             <p>revise regularly with <b className="md:text-[4rem] lg:text-[5rem]">FLASHCARDS</b></p>
@@ -268,7 +272,7 @@ const Home = () => {
             </>
 
 
-                      
+
         </div>
     )
 }
