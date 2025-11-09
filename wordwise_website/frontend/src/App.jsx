@@ -3,7 +3,6 @@ import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-
 import FlashCards from './pages/FlashCards';
 import Profile from './pages/Profile';
 

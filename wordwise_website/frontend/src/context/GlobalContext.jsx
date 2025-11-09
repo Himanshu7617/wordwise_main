@@ -34,24 +34,28 @@ const GlobalContext = (props) => {
         try {
             const response = await fetch(`${websiteBackendURL}/auth/signup`, {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({ name, email, password })
             });
+            const res = await response.json();
+            
             if (response.ok) {
-                const res = await response.json();
                 localStorage.setItem("wordwiseToken", `Bearer ${res.token}`);
 
                 const userData = await bcrypt.hash(res.user);
                 localStorage.setItem("wordwiseUser", userData);
-                return true;
-            } else {
-                console.log(response);
-                alert(response.message || "Error signing up. Please try again.");
-                return false;
+               
+                return {message: "Sign up successful" };
+            }else{
+                console.error("Sign up failed: ", res.message);
+                return {message: res.message};
             }
 
         } catch (error) {
-            console.error(error.message);
-            return false;
+            console.error("error during sign up ", error);
+            return {message: error.message}
         }
     }
 
@@ -75,15 +79,12 @@ const GlobalContext = (props) => {
                 const userData = await bcrypt.hash(res.user,10);//  yeh yahan pe error hai 
 
                 localStorage.setItem("wordwiseUser", userData);
-                return true;
-            } else {
-                alert(response.message || "Error logging in. Please try again.");
-                return false;
-            }
+                return {message: "Login successful" };
+            } 
         } catch (error) {
             setIsLoggedIn(false);
             console.error(error);
-            return false;
+            return error;
         }
     }
 

@@ -14,6 +14,7 @@ import mdClock from "/images/mdClock.png";
 import hor1 from "/images/hor1.png";
 import hor2 from "/images/hor2.png";
 import hor3 from "/images/hor3.png";
+import { ToastContainer } from "react-toastify";
 
 gsap.registerPlugin(MotionPathPlugin, Flip);
 gsap.registerPlugin(ScrollTrigger);
@@ -267,7 +268,7 @@ const Home = () => {
             </>
 
 
-
+                      
         </div>
     )
 }

@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Card, Input, Button, Typography, } from "@material-tailwind/react";
 import { wordwiseContext } from '../context/GlobalContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Login = () => {
 
@@ -17,12 +18,23 @@ const Login = () => {
     }
 
     const success = wordwiseCtxt.signInUser(wordwiseCtxt.email, wordwiseCtxt.password);
-    if (!success) {
-      alert("Login failed. Please check your credentials and try again.");
+
+    if (success && success.message !== "Login successful") {
+      toast.error('Login failed!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       return;
     }
 
-   // navigate('/dashboard');
+    // navigate('/dashboard');
     wordwiseCtxt.setEmail('');
     wordwiseCtxt.setPassword('');
   }
@@ -92,6 +104,19 @@ const Login = () => {
             </Typography> */}
         </form>
       </Card>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+
+      />
     </div>
   );
 
