@@ -1,6 +1,4 @@
-import { getAuth } from "firebase-admin/auth";
 import express from "express";
-import admin from "firebase-admin";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 
@@ -16,6 +14,9 @@ const app = express();
 app.use(express.json());
 
 const geminiAPIKEY = process.env.GEMINI_API_KEY;
+if (!geminiAPIKEY) {
+  console.error("GEMINI_API_KEY is missing!");
+}
 const ai = new GoogleGenAI({ apiKey: geminiAPIKEY });
 
 const backendURL = "https://backend.gghimanshu333.workers.dev";
@@ -31,11 +32,11 @@ app.get("/check/:email", async (req, res) => {
       `${backendURL}/auth/getUserByEmail/${email}`
     );
     const userRecord = await response.json();
-    if (userRecord ) {
+    if (userRecord) {
       console.log(userRecord)
-      res.status(200).send({...userRecord});
-    }else{
-      res.status(404).send({message : "user not found"});
+      res.status(200).send({ ...userRecord });
+    } else {
+      res.status(404).send({ message: "user not found" });
     }
   } catch (error) {
     res.status(500).send(error);
@@ -80,7 +81,8 @@ app.get("/randomWord/:idx", async (req, res) => {
       res.json(parsedData); // send real JSON to frontend
     }
   } catch (error) {
-    res.send(error);
+    console.error("Error in /randomWord/:idx:", error);
+    res.status(500).json({ error: error.message || error, stack: error.stack });
   }
 });
 
