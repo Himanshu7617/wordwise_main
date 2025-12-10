@@ -25,31 +25,7 @@ type newWord = {
   meaning : string,
 }
 
-//getting the env variables
-// const apiKey = <string>process.env.API_KEY;
-// const FIREBASE_API_KEY = <string>process.env.FIREBASE_API_KEY;
-// const FIREBASE_AUTH_DOMAIN = <string>process.env.FIREBASE_AUTH_DOMAIN;
-// const FIREBASE_PROJECT_ID = <string>process.env.FIREBASE_PROJECT_ID;
-// const FIREBASE_STORAGE_BUCKET = <string>process.env.FIREBASE_STORAGE_BUCKET;
-// const FIREBASE_SENDER_ID = <string>process.env.FIREBASE_SENDER_ID;
-// const FIREBASE_APP_ID = <string>process.env.FIREBASE_APP_ID;
 
-//Firebase configuration
-// const firebaseConfig = {
-//   apiKey: FIREBASE_API_KEY,
-//   authDomain: FIREBASE_AUTH_DOMAIN,
-//   projectId: FIREBASE_PROJECT_ID,
-//   storageBucket: FIREBASE_STORAGE_BUCKET,
-//   messagingSenderId: FIREBASE_SENDER_ID,
-//   appId: FIREBASE_APP_ID,
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const auth = getAuth();
-// const wordsDB = getFirestore(app);
-let userID;
-let userDocID;
 const allWords: RandomWord[] = [];
 
 //accessing all dom elements
@@ -82,6 +58,10 @@ const randomWordIndex = isRandomWordIndex ? parseInt(isRandomWordIndex) : 0;
 //at startup
 async function displayRandomWord() {
   generateRandomWord().then( async (responseData) => {
+    if (!responseData) {
+      console.error("No response data received");
+      return;
+    }
     wordPNode.innerHTML = responseData?.word;
     meaningPNode.innerHTML = responseData?.meaning; 
     examplePNode.innerHTML = <string>responseData?.example;

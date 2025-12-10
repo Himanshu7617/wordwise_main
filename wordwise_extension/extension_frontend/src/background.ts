@@ -1,16 +1,19 @@
 
 // opne website as soon as the user installs the extesion 
-chrome.runtime.onInstalled.addListener(( { reason } ) => { 
-    if (reason === 'install') { 
-        chrome.tabs.create( { 
-            url : "https://www.wordwise.foo/"
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === 'install') {
+        chrome.tabs.create({
+            url: "https://www.wordwise.foo/"
         });
-        localStorage.setItem('wordwiseRandomWordIndex','0');
-        chrome.storage.local.set({wordwiseAllWordsList : []})
+        // localStorage is not available in service workers. Using chrome.storage.local instead.
+        chrome.storage.local.set({
+            wordwiseRandomWordIndex: '0',
+            wordwiseAllWordsList: []
+        });
     }
 });
 
 
-chrome.runtime.onStartup.addListener(()=> { 
+chrome.runtime.onStartup.addListener(() => {
     chrome.action.openPopup();
 })

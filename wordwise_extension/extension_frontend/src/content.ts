@@ -19,13 +19,7 @@ chrome.storage.local.get(["wordwiseAllWordsList"], (res) => {
 
 // process nodes and change the word
 function handleProcessNodeEvent(node: HTMLElement | ChildNode) {
-  if (node.childNodes.length > 0) {
-    Array.from(node.childNodes).forEach(handleProcessNodeEvent);
-  }
-
-  if (node instanceof HTMLElement) {
-    handleChangeWordEvent(node);
-  }
+  handleChangeWordEvent(node);
 }
 
 function handleChangeWordEvent(node: Node) {
@@ -41,12 +35,17 @@ function handleChangeWordEvent(node: Node) {
   } else if (node.nodeType === Node.ELEMENT_NODE) {
     const el = node as HTMLElement;
 
-    // Skip input/textarea/contentEditable
-    if (
-      el.tagName === "INPUT" ||
-      el.tagName === "TEXTAREA" ||
-      el.isContentEditable
-    ) {
+    // Skip input/textarea/contentEditable and other non-visible/code tags
+    const excludedTags = [
+      "INPUT",
+      "TEXTAREA",
+      "SCRIPT",
+      "STYLE",
+      "NOSCRIPT",
+      "IFRAME",
+      "OBJECT",
+    ];
+    if (excludedTags.includes(el.tagName) || el.isContentEditable) {
       return;
     }
     node.childNodes.forEach((child) => handleChangeWordEvent(child));
